@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Newspaper Game</title>
+    
+    <style>
+        body {
+            background-image: url('https://i.pinimg.com/736x/3f/82/6f/3f826fc9fa4b61326335768c07edca2b.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: rgb(48, 30, 18);
+            margin: 0;
+            padding: 0;
+        }
+
+        .newspaper {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #d6cfbd;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid;
+            position: relative;
+            overflow-y: scroll;
+        }
+
+        .date-header {
+            text-align: right;
+            font-size: 30px;
+            padding-top: 10px;
+        }
+
+        #date-input {
+            border: none; /* Kenarlığı kaldırır */
+            background-color: #d6cfbd; /* Arka plan rengi aynı kalabilir */
+        }
+
+        .header {
+            text-align: center;
+            font-size: 80px;
+            font-weight: bold;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            line-height: 2;
+            font-family: Luminari;
+        }
+
+
+        .suspect-photos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .suspect-photos img {
+            width: 170px;
+            height: 170px;
+            border: 1px solid #333;
+            cursor: pointer;
+        }
+
+        .detective-notes {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .detective-notes textarea {
+            width: 300px;
+            height: 100px;
+        }
+
+        .article {
+            margin: 20px 0;
+            display: flex; 
+            align-items: flex-start; 
+            gap: 40px; 
+            font-size: 20px;
+        }
+
+        .article1 {
+            font-family: 'Victoria Typewriter';
+            font-size: 15px;
+            line-height: 1.3;
+            margin: 5px 0;
+            display: flex; 
+            align-items: flex-start; 
+            gap: 100px; 
+        }
+        .article-content {
+            flex: 2; /* Gives more space to the text */
+        }
+
+        .article-content h2 {
+            font-family: Luminari;
+            margin-bottom: 10px;
+            line-height: 1.8;
+            font-size: 1.5em;
+        }
+
+        .article-content p {
+            font-family: 'Victoria Typewriter';
+            text-align: justify;
+            line-height: 1.5;
+            font-size: medium;
+        }
+
+        .article-image {
+            flex: 1; /* Assigns less space to the image */
+            text-align: center;
+            line-height: 1.5;
+            font-family: 'Gill Sans', 'Gill Sans MT', fantasy, 'Trebuchet MS', sans-serif;
+            font-size: medium;
+            
+        }
+
+        .article-image img {
+            max-width: 100%;
+            height: 340px;
+            border: 1px solid rgb(105, 102, 102);
+        }
+
+        .suspect-photos {
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 300px; 
+            margin-top: 20px; 
+        }
+
+
+        .interactive {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f8f8;
+            border: 1px solid #ccc;
+        }
+
+        .interactive input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .interactive button {
+            padding: 10px 20px;
+            background: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .interactive button:hover {
+            background: #555;
+        }
+       
+
+        .block-image {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #333;
+            bottom: 300px;
+        }
+
+        .bottom-left-image {
+            position: absolute;
+            bottom: 280px;
+            left: 10px;
+            width: 300px;
+            border: 2px solid #333;
+        }
+ 
+        .poem {
+            width: 20%; 
+            height: 50px; 
+            margin-top: -30px; 
+            text-align: center;
+            line-height: 1.5;
+            font-size: 17px; 
+            padding: 5px;
+            left: 350px;
+            bottom: 430px;
+            position: absolute;
+            font-family: 'Victoria Typewriter';
+            border: #333;
+
+        }
+
+        .poem h2 {
+            font-family: Luminari;
+            font-size: 20px;
+            font-style: bold;
+        }
+        
+
+
+        .circus {
+            display: flex;
+            align-items: flex-start; 
+            gap: 20px; 
+            bottom: auto;
+            right: 70px;
+        }
+
+
+        .circus img{
+            position: absolute; 
+            bottom: 10px; 
+            right: 10px; 
+            width: 590px; 
+            height: auto; 
+            border: none; 
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="newspaper">
+        <div class="date-header">
+            <p>04/17/ <input type="text" id="date-input" placeholder="__ __ __ __" ></p>
+        </div>
+        <div class="header">Mystery Times</div>
+
+        <div style="text-align: center; margin: 20px; background-color: #d6cfbd; padding: 10px 20px; font-size: 18px; cursor: pointer; font-family: Victoria Typewriter; background-color: #d6cfbd">
+            <button id="reveal-questions" >
+                Reveal Questions
+            </button>
+        </div>
+        
+        <div class="interactive" id="interactive-section" style="display: none; background-color: #d6cfbd; font-family: Victoria Typewriter;">
+            <h3>Answer the following questions:</h3>
+            <div id="questions">
+                <button onclick="checkAnswers()">Check All Answers</button>
+                <div>
+                    <p>1. Who has found the dead body near the Gala?</p>
+                    <input type="text" id="answer1" placeholder="Write your answer here">
+                    <span id="result1"></span>
+                </div>
+                <div>
+                    <p>2. What was the name of the victim?</p>
+                    <input type="text" id="answer2" placeholder="Write your answer here">
+                    <span id="result2"></span>
+                </div>
+                <div>
+                    <p>3. Who called the police after hearing a loud noise?</p>
+                    <input type="text" id="answer3"placeholder="Write your answer here">
+                    <span id="result3"></span>
+                </div>
+                <div>
+                    <p>4. Where was the victim found?</p>
+                    <input type="text" id="answer4" placeholder="Write your answer here">
+                    <span id="result4"></span>
+
+                </div>
+                <div>
+                    <p>5. Who is the owner of Essence Allure?</p>
+                    <input type="text" id="answer5" placeholder="Write your answer here">
+                    <span id="result5"></span>
+
+                </div>
+                <div>
+                    <p>6. What is the answer of the Riddle Corner?</p>
+                    <input type="text" id="answer6" placeholder="Write your answer here">
+                    <span id="result6"></span>
+                </div>
+                <div class="feedback" id="feedback"></div>
+            </div>
+        </div>
+            
+
+        <div class="detective-notes">
+            <h3>Detective's Notes</h3>
+            <textarea id="notes" placeholder="Write your notes here..."></textarea>
+        </div>
+
+        <div class="article">
+            <div class="article-image">
+                <img src="Görüntü 23.12.2024 17.00 (1).jpg" alt="Advertisement1">
+                
+                <img src = "IMG_7445 2.jpg" alt = "Advertisement2">
+                <p><em>A flower which was found next to the dead body, The crime scene</em></p>
+                
+            </div>
+            <div class="article-content">
+                <h2>Tragic Night in The Big Gala</h2>
+                <p>Last night, the serene streets of Greenfield were disturbed by a heinous crime. Residents awoke to news of a tragic murder near the event of Town Gala on Hill Street. The victim found in the lake which is near the Gala building, identified as the famous businessman Mr. Jonathan Price. He was found with a flower on his body, lying on lakeside lifelessly. Police are urging witnesses to come forward.</p>
+                <h2>Witness Reports</h2>
+                <p>One resident reported hearing a loud noise around midnight. Another claimed to have seen a shadowy figure leaving the premises. The police are piecing together the clues, but they need your help to solve this case.</p>
+                <h2>Suspect Profiles</h2>
+                
+            <div class="suspect-photos"></div>
+                 <img src="Görüntü 24.12.2024 14.59 (1).jpg" width="170" height="170" alt="suspect1" onclick="showSuspectDetails(1)">
+                 <img src="Görüntü 24.12.2024 14.59.jpg" width="170" height="170" alt="suspect2" onclick="showSuspectDetails(2)">
+                 <img src="Görüntü 24.12.2024 14.58.jpg" width="170" height="170" alt="suspect3" onclick="showSuspectDetails(3)">
+            </div>
+
+            <div class="article-image">
+                <img src="Görüntü 23.12.2024 16.05.jpg" alt="Crime Scene">
+                <p><em>The scene of the crime, victim and the detectives at the crime scene.</em></p>
+                <p><strong>Three individuals have come under suspicion:</strong></p>
+                <p><ul>
+                    <li><strong>Mr. Smith</strong>: Longtime friend of the victim who reported the loud noise.</li>
+                    <li><strong>Ms. Davenport</strong>: Perfume Business Dealer with ties to the victim.</li>
+                    <li><strong>Det. Evans</strong>: The detective that was in charge of the search party that found the dead body.</li>
+                </ul></p>
+            </div>
+        </div>
+
+        <div class="article1"> 
+            <p><strong>Mr. Smith:</strong>"I was chatting with some friends at the Gala when I heard the noise. I immediately called the police because Jonathan was also nowhere to be seen. I didn’t see anything unusual before that."
+            <p><strong>Ms. Davenport:</strong> "Jonathan and I were close friends, and I often helped him with his flower collection and he recommended me flowers for my perfumes. I can’t believe anyone would hurt him. I was with an old friend at the Gala last night, sipping wine."
+            </p>
+            <p><strong>Det. Evans:</strong> "I was called to the crime location with my team when someone reported a loud noise. We then found Mr. Price's lifeless body near the lake"
+            </p>
+        </div>
+
+
+        <div class="article perfume-article">
+    <div class="article-image">
+    <img src="Görüntü 27.12.2024 18.26.jpg" alt="Essence Allure Perfume">
+        <p><em>The Moon Lily, Essence Allure: At the center of the controversy.</em></p>
+    </div>
+        
+    <div class="article-content">
+        <h2>Perfume Under Fire</h2>
+            <p>A popular perfume brand, "Essence Allure," is facing serious allegations from its users. Multiple reports have surfaced claiming that the perfume contains a toxic flower, known as The Moon Lily, causing severe health issues. One user stated, "I experienced dizziness and nausea after using it." The accusations have led to public outcry and calls for an investigation.</p>
+            <p>Meanwhile, the owner of "Essence Allure," Ms. Clara Davenport, has strongly denied the claims. In a statement, she said, "Our products go through rigorous testing and meet all safety standards. These accusations are baseless and aimed at tarnishing our reputation."</p>
+    </div>
+
+</div>
+<body>
+    <div class="container">
+        <img src="2-vintage-victorian-style-newspaper-design-template-bortonia.jpg" alt="Cheese with holes" class="cheese-image">
+        <button class="button" id="btn1" onclick="showNumber(this, 1)" aria-label="Button 1"></button>
+        <button class="button" id="btn2" onclick="showNumber(this, 8)" aria-label="Button 2"></button>
+        <button class="button" id="btn3" onclick="showNumber(this, 9)" aria-label="Button 3"></button>
+        <button class="button" id="btn4" onclick="showNumber(this, 2)" aria-label="Button 4"></button>
+    </div>
+    
+    <div class = "poem">
+        <h2>Riddle Corner</h2>
+       <p>I glow at night, a silvery light,
+        In the sky, I’m a murderer's sight.
+        </p>
+        <h2>Step into Comfort!</h2>
+        <p>Built to last, designed for elegance, and perfect for every occasion. Affordable at only $2 a pair. Visit Whitman’s Shoe Emporium today on Main Street!</p>
+        </div>
+
+        
+
+     <div class="circus">    
+        <img src="Görüntü 27.12.2024 14.40.jpg" alt = circus>
+    </div>
+
+    <script>
+        function showNumber(button, number) {
+            button.textContent = number;
+            button.style.opacity = 1; 
+        }
+    </script>
+
+</body>        
+    <script>
+        function saveNotes() {
+            const notes = document.getElementById('notes').value;
+            alert('Notes saved: ' + notes);
+        }
+
+        function showSuspectDetails(suspectId) {
+            // Example SQL-based fetch for suspect details
+            const suspectDetails = {
+                1: 'Mr. Smith: Him and the victim have not spoken in years.',
+                2: 'Ms. Davenport: She has business ties with the victim.',
+                3: 'Det. Evans: The victim was withholding promised bribe to the detectice.'
+            };
+
+            alert(suspectDetails[suspectId]);
+        }
+
+        document.getElementById('date-input').addEventListener('input', function () {
+            const year = this.value;
+            if (year === '1892') {
+                alert('Confession Letter: I cannot live with this guilt any longer... I am here to confess to a crime that has ruined my life. And no, Im not talking about the murder. Im talking about what that man has done to my business. The business I have worked day and night to strengthen. Jonathan Price has been a terrible addition to my life. When I thought he was helping me, he was actually giving me poisonous flowers to use as an essence for my perfume business. He ruined my business so his new business partner who also owns another perfume company can be succesful. I am dealing with many lawsuits because those perfumes have poisoned my customers. My business is gone, my life is over and now it is completely ruined now that i have taken my revenge. Yes, I have done it. I have killed Jonathan Price and I have left one last gift to him...A Flower. Now it is time to say Goodbye... This is my story, and it is time to face the consequences.');
+            }
+        });
+    </script>
+    <script>
+        const correctAnswers = {
+            answer1: 'Det. Evans',
+            answer2: 'Jonathan Price',
+            answer3: 'Mr. Smith',
+            answer4: 'Lake',
+            answer5: 'Ms. Davenport',
+            answer6: 'Moon',
+        };
+
+        function checkAnswers() {
+            let feedback = '';
+            let allCorrect = true;
+
+            // Loop through each answer input
+            for (let i = 1; i <= 6; i++) {
+                const userAnswer = document.getElementById(`answer${i}`).value.trim();
+                const correctAnswer = correctAnswers[`answer${i}`];
+
+                // Check if the user's answer matches the correct answer
+                if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                    document.getElementById(`result${i}`).innerText = 'Correct!';
+                } else {
+                    document.getElementById(`result${i}`).innerText = `Incorrect! The correct answer is: ${correctAnswer}`;
+                    allCorrect = false;
+                }
+            }
+
+            // Give overall feedback
+            if (allCorrect) {
+                feedback = 'All answers are correct! Well done!';
+                const murderer = prompt("Who is the Murderer?");
+                if (murderer.toLowerCase() === "ms. davenport") {
+                    alert("Congratulations! You found the murderer!");
+                } else {
+                    alert("You failed to catch the killer. You need to work harder.");
+                }
+            } else {
+                   feedback = 'Some answers are incorrect. Please try again.';
+            }
+
+            document.getElementById('feedback').innerText = feedback;
+        }
+    </script>
+    
+    <script>
+        // Toggle the visibility of the questions section
+        document.getElementById('reveal-questions').addEventListener('click', function () {
+            const section = document.getElementById('interactive-section');
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                this.innerText = 'Hide Questions';
+            } else {
+                section.style.display = 'none';
+                this.innerText = 'Reveal Questions';
+            }
+        });
+    </script>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cheese-image {
+            display: block;
+            width: 300px;
+            height: auto;
+        }
+
+        .button {
+            position: absolute;
+            background-color: #f4e5b6; 
+            border: 2px solid #d1c28f; 
+            border-radius: 50%; 
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000; 
+            opacity: 0; 
+        }
+
+        .button:hover {
+            opacity: 0.8; 
+        }
+
+        #btn1 { top: 55%; left: 22%; }
+        #btn2 { top: 48%; left: 33%; }
+        #btn3 { top: 40%; left: 57%; }
+        #btn4 { top: 50%; left: 73%; }
+
+    </style>
+</head>
+</body>
+</html>
